@@ -1,6 +1,6 @@
 # Title #
     TV-show manager
-# Name #
+## Name ##
     Joostens Tomek
-# Description #
+## Description ##
     This website helps you to maintain your TV-show collection, obtain serie information and add shows to your own collection.
