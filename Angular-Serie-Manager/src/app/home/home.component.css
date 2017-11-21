@@ -2,7 +2,6 @@
     .navbar {
       margin-bottom: 0;
       border-radius: 0;
-
     }
     
     /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
@@ -13,6 +12,10 @@
       padding-top: 20px;
       background-color: #f1f1f1;
       height: 100%;
+    }
+
+    .spacing{
+      padding-top: 50px;
     }
     
     /* Set black background color, white text and some padding */
@@ -29,10 +32,4 @@
         padding: 15px;
       }
       .row.content {height:auto;} 
-    }
-
-
-    .row 
-    {
-      margin-top: 10px;
     }

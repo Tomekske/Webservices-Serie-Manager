@@ -1,0 +1,35 @@
+<div class="col-sm-8 text-left"> 
+	<h1>Login</h1>
+	<hr>
+	<div class="container-fluid">
+	  <div class="row">
+	    <div class="Absolute-Center is-Responsive">
+	      <div id="logo-container"></div>
+	      <div class="col-sm-12 col-md-4 col-md-offset-1">
+	        <form action="" id="loginForm">
+	          <div class="form-group input-group">
+	            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+	            <input class="form-control" type="text" 
+	            	   name='username' placeholder="username"
+	            	   [(ngModel)]="username" 
+	            	   [style.borderColor]="checkUsername ? 'red':'#CCCCCC'" />          
+	          </div>
+	          <div class="form-group input-group">
+	            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+	            <input class="form-control" type="password" 
+	            	   name='password' placeholder="password" [(ngModel)]="password"
+	            	   [style.borderColor]="checkPassword ? 'red':'#CCCCCC'" /> 
+	          </div>
+	          <div class="form-group">
+	            <button type="button" class="btn btn-def btn-block"
+	            (click)="checkInputs()">Login</button>
+	          </div>
+	          <div class="form-group text-center">
+	          	<a routerLink="/register">Register</a>
+	          </div>
+	        </form>        
+	      </div>  
+	    </div>    
+	  </div>
+	</div>
+</div>
