@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/Forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/Forms';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
@@ -27,6 +27,7 @@ import { RegisterComponent } from './register/register.component';
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     RouterModule.forRoot([
         { path: '', component: HomeComponent},
         { path: 'contact', component: ContactComponent},

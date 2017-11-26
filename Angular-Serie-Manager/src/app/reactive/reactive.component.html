@@ -1,5 +1,5 @@
 <div class="col-sm-8 text-left"> 
-  <h1>Login</h1>
+  <h1>Reactive</h1>
   <hr>
   <div class="container-fluid">
     <div class="row">
@@ -23,8 +23,7 @@
                    #username="ngModel"
                    class="form-control" 
                    type="text" 
-                   name='username'
-                   [(ngModel)]="sUsername" 
+                   name='username' 
                    placeholder="username"/> 
 
             </div>
@@ -37,7 +36,7 @@
               </div>
               <div
                 *ngIf="username.errors.pattern">
-                Invalid username.
+                Invalid characters.
               </div>
             </div>
 
@@ -47,14 +46,13 @@
               <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
               <input  
                    required
-                   pattern="^([a-zA-z]|[0-9])+$"
+                   pattern="^[a-zA-z]+$"
                    ngModel 
                    name= "password"
                    #password="ngModel"
                    class="form-control" 
-                   type="password" 
-                   name='password'
-                   [(ngModel)]="sPassword"  
+                   type="text" 
+                   name='password' 
                    placeholder="password"/>  
             </div>
             <div
@@ -66,7 +64,7 @@
               </div>
               <div
                 *ngIf="password.errors.pattern">
-                Invalid password.
+                Invalid characters.
               </div>
             </div>
 

@@ -6,38 +6,23 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  username = "";
-  password = "";
-  checkUsername = false;
-  checkPassword = false;
+  sUsername = "";
+  sPassword = "";
+  login = {
+    sentUsername: "",
+    sentPassword: ""
+  };
   constructor() { }
 
   ngOnInit() {
   }
 
-  checkInputs()
+  send()
   {
-  	if(this.username.length === 0 && this.password.length === 0)
-  	{
-  		this.checkUsername = true;
-  		this.checkPassword = true;
-  	}
-    else if(this.username.length === 0)
-  	{
-  		this.checkUsername = true;
-  		this.checkPassword = false;
-
-  	}
-  	else if(this.password.length === 0)
-  	{
-  		this.checkUsername = false;
-  		this.checkPassword = true;  		
-  	}
-  	else
-  	{
-  		this.checkUsername = false;
-  		this.checkPassword = false;
-  	}
+    this.login.sentUsername = this.sUsername;
+    this.login.sentPassword = this.sPassword;
+    console.log("Form sent from login\r\n");
+    console.log(this.login);
   }
 }
 
