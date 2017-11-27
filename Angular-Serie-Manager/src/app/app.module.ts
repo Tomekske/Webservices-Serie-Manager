@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/Forms';
 import { RouterModule } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { FooterComponent } from './footer/footer.component';
@@ -11,6 +12,7 @@ import { ContactComponent } from './contact/contact.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import { PopularComponent } from './popular/popular.component';
 
 
 @NgModule({
@@ -22,17 +24,20 @@ import { RegisterComponent } from './register/register.component';
     ContactComponent,
     HomeComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    PopularComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    HttpClientModule,
     ReactiveFormsModule,
     RouterModule.forRoot([
-        { path: '', component: HomeComponent},
-        { path: 'contact', component: ContactComponent},
-        { path: 'login', component: LoginComponent},
-        { path: 'register', component: RegisterComponent}
+        { path: '', component: HomeComponent },
+        { path: 'contact', component: ContactComponent },
+        { path: 'login', component: LoginComponent },
+        { path: 'register', component: RegisterComponent },
+        { path: 'popular', component: PopularComponent }
     ])
   ],
   providers: [],

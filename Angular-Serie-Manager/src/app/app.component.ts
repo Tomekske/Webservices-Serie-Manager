@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +6,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  test = "";
   title = 'app';
+
+  getQuery(event){
+  	console.log("Output:",event);
+    this.test = event;
+  }
 }

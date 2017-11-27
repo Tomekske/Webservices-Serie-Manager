@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-navbar',
@@ -6,13 +6,25 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-  constructor() { }
-search = "";
-  ngOnInit() {
-  }
-yourMethod(){
-	console.log(this.search);
-}
+//	readonly ROOT_URL = 'https://jsonplaceholder.typicode.com';
+//	readonly ROOT_URL = 'api.themoviedb.org';
+//	posts: any;
+	search = "";
 
+	@Output() query = new EventEmitter<string>();
+
+  constructor() {
+
+   }
+
+	  ngOnInit() {
+	  
+	  }
+
+
+	sendQuery(search){
+		console.log(search);
+		this.query.emit(this.search);
+	}
 
 }
