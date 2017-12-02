@@ -1,0 +1,46 @@
+<div class="col-sm-8 text-left"> 
+  <h1>TV-Show information</h1>
+  <hr>
+  <ul *ngFor="let item of serie_information">
+      <div class="container">    
+		<div class="row">
+			<div class="col-md-8">				
+				<div class="panel panel-default  panel--styled">
+					<div class="panel-body">
+						<div class="col-md-12 panelTop">	
+							<div class="col-md-4">	
+								<img class="img-responsive" src="{{ item.url }}" alt="No Poster"/>
+							</div>
+							<div class="col-md-8">	
+								<h2>{{ item.serie }}</h2>
+								<p>{{ item.description }}</p>
+							</div>
+						</div>
+					</div>
+					<div class="season-margin">
+						<ul *ngFor="let item of fakeArray"> 
+							<div class="panel-group" id="accordion">
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h4 class="panel-title">
+											<a data-toggle="collapse" 
+											   data-parent="#accordion" 
+											   href="#col{{item}}">
+											   Season {{ item + 1 }}
+											</a>
+										</h4>
+									</div>
+									<!-- dynamic id's -->
+									<div [attr.id]="'col'+ item" class="panel-collapse collapse out">
+										<div class="panel-body">Episode {{ item + 1 }}</div>
+									</div>
+								</div>
+							</div>
+						</ul>
+				    </div>
+				</div>
+			</div>
+		</div>
+    </div>
+  </ul>
+</div>

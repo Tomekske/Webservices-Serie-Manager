@@ -13,6 +13,8 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { PopularComponent } from './popular/popular.component';
+import { SerieComponent } from './serie/serie.component';
+import { SearchComponent } from './search/search.component';
 
 
 @NgModule({
@@ -25,7 +27,9 @@ import { PopularComponent } from './popular/popular.component';
     HomeComponent,
     LoginComponent,
     RegisterComponent,
-    PopularComponent
+    PopularComponent,
+    SerieComponent,
+    SearchComponent
   ],
   imports: [
     BrowserModule,
@@ -37,7 +41,9 @@ import { PopularComponent } from './popular/popular.component';
         { path: 'contact', component: ContactComponent },
         { path: 'login', component: LoginComponent },
         { path: 'register', component: RegisterComponent },
-        { path: 'popular', component: PopularComponent }
+        { path: 'popular', component: PopularComponent },
+        { path: 'serie/:name', component: SerieComponent },
+        { path: 'search/:name', component: SearchComponent }
     ])
   ],
   providers: [],
