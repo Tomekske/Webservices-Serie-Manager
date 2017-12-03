@@ -43,11 +43,6 @@ export class PopularComponent implements OnInit {
 	   		console.log(this.pictureBaseUrl);
 	   		this.popular.push({ name: data.results[i].name, description: data.results[i].overview, url: this.pictureFullUrl });
 	    }
-
-	    for(let i=0;i<10;i++)
-	    {
-		//	console.log(this.popular[i]);
-		}
  	 })
   }
 }

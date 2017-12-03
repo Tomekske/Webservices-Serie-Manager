@@ -15,6 +15,8 @@ import { RegisterComponent } from './register/register.component';
 import { PopularComponent } from './popular/popular.component';
 import { SerieComponent } from './serie/serie.component';
 import { SearchComponent } from './search/search.component';
+import { UsersComponent } from './users/users.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 
 @NgModule({
@@ -29,7 +31,9 @@ import { SearchComponent } from './search/search.component';
     RegisterComponent,
     PopularComponent,
     SerieComponent,
-    SearchComponent
+    SearchComponent,
+    UsersComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -43,7 +47,8 @@ import { SearchComponent } from './search/search.component';
         { path: 'register', component: RegisterComponent },
         { path: 'popular', component: PopularComponent },
         { path: 'serie/:name', component: SerieComponent },
-        { path: 'search/:name', component: SearchComponent }
+        { path: 'search/:name', component: SearchComponent },
+        { path: 'dashboard', component: DashboardComponent }
     ])
   ],
   providers: [],
