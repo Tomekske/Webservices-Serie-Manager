@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { RequestOptions } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
+import { ActivatedRoute,Router, Params } from '@angular/router';
 
 
 @Component({
@@ -10,13 +14,14 @@ export class RegisterComponent implements OnInit {
   sUsername = "";
   sPassword = "";
   sEmail = "";
+  baseUrl = 'http://localhost:5000/users/create';
 
   register = {
-    sentUsername: "",
-    sentEmail: "",
-    sentPassword: ""
+    username: "",
+    email: "",
+    password: ""
   };
-  constructor() { }
+  constructor(private http: HttpClient,private route: ActivatedRoute,private router: Router) { }
 
   ngOnInit() {
 
@@ -24,11 +29,16 @@ export class RegisterComponent implements OnInit {
 
   send()
   {
-    this.register.sentUsername = this.sUsername;
-    this.register.sentEmail = this.sEmail;
-    this.register.sentPassword = this.sPassword;
+    this.register.username = this.sUsername;
+    this.register.email = this.sEmail;
+    this.register.password = this.sPassword;
+    
+    this.http.post(this.baseUrl, JSON.stringify(this.register),{headers: new HttpHeaders().set('Content-Type', 'application/json')})
+      .subscribe(res => {
+              this.router.navigate(['/login']);
 
-    console.log("Form sent from register\r\n");
-    console.log(this.register);
+
+        },
+      );
   }
 }

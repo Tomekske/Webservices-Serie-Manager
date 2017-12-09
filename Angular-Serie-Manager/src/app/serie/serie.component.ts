@@ -32,6 +32,17 @@ interface episodesPerSeason{
 
 //-----------------------------------
 
+interface episodes {
+    ep_number: number,
+	title: string
+}
+
+// interface season {
+//     s_episodes: episodes[];
+// }
+
+//----------------------------------
+
 @Component({
   selector: 'app-serie',
   templateUrl: './serie.component.html',
@@ -46,11 +57,41 @@ export class SerieComponent implements OnInit {
 		url: string
 	}[] = [];
 
-	episodes:{
-//		ep_number: number,
+	f_episodes:{
+		ep_number: number,
 		title: string
-	    
 	}[] = [];
+    
+    f_season: episodes[][] = [];
+	
+	// q_episodes:{
+	// 		ep_number: number,
+	// 		title: string
+	// 	}[] = [];
+
+	// q_season: {
+	// 	s_episodes: {
+	// 		[key: number] : episodes
+	// 	}
+
+	// }[] = [];
+
+
+	// test: season = {
+	// 	s_episodes: [{
+	// 		ep_number:1,
+	// 		title: "1 qqqq"
+	// 	},
+	// 	{
+	// 		ep_number:2,
+	// 		title: "2 qqqq"		
+	// 	},
+	// 	{
+	// 		ep_number:3,
+	// 		title: "3 qqqq"		
+	// 	}]
+	// };
+
 
 	id: number = 0;
 	serie = "";
@@ -76,6 +117,7 @@ export class SerieComponent implements OnInit {
   constructor(private route: ActivatedRoute,private http: HttpClient) { }
 
   ngOnInit() {
+
   	this.routeSub = this.route.params.subscribe(params =>{
   		this.name =	params['name'];	
   		
@@ -86,13 +128,14 @@ export class SerieComponent implements OnInit {
    			this.serie = data.results[0].name;
    			this.description = data.results[0].overview;
 
-   			console.log(this.id);
+   			console.log('id',this.id);
    			this.fullUrl = this.baseUrl + this.id + this.api_key;
    			this.pictureFullUrl = this.pictureBaseUrl + data.results[0].poster_path;
 
    			//next http request
 	  		this.nPost = this.http.get<advancedInformation>('http://api.themoviedb.org/3/tv/'+ this.id +'?api_key=' + this.api_key).subscribe(advInfo =>{
   				this.amount_of_seasons = advInfo.number_of_seasons;
+  				//this.amount_of_seasons = 5;
 
 	  			this.serie_information.push({
 	  				serie: this.serie,
@@ -108,30 +151,41 @@ export class SerieComponent implements OnInit {
 	  				this.fakeArray.push(i);		
 	  			}
 
-// 				for(let j = 1;j <= this.amount_of_seasons;j++)
-// 				{
-// 					this.wPost = this.http.get<episodesPerSeason>('https://api.themoviedb.org/3/tv/'+ this.id +'/season/'+ j +'?api_key=' + this.api_key).subscribe(serieInfo =>{
-// 						this.amount_of_episodes = serieInfo.episodes.length;
 
-// 						for(let i = 0;i < 10;i++)
-// 						{
-// 							this.episodes.push({
-// 								ep_number: serieInfo.episodes[i].episode_number,
-// 								title: serieInfo.episodes[i].name
-// 							});
-
-// 						}
-// 					for(let x in this.episodes)
-// 			      	{
-// 			      		console.log(this.episodes[x].title);
-// 			      	}
-			    
-
-// 			     	});
-
-//			     }
+//--------------------------------------------------------------------------------
 
 
+ 				for(let j = 1;j <= this.amount_of_seasons;j++)
+ 				{
+ 					this.wPost = this.http.get<episodesPerSeason>('https://api.themoviedb.org/3/tv/'+ this.id +'/season/'+ 1 +'?api_key=' + this.api_key).subscribe(serieInfo =>{
+ 						this.amount_of_episodes = serieInfo.episodes.length;
+
+
+ 						//console.log(this.amount_of_episodes);
+ 						//console.log(serieInfo.episodes[j-1].name);
+
+						for(let i = 0;i < this.amount_of_episodes;i++)
+						{
+
+							this.f_episodes.push({
+							 	ep_number: serieInfo.episodes[i].episode_number,
+							 	title: serieInfo.episodes[i].name								
+							});
+
+						}
+						//console.log(j);
+
+
+						this.f_season.push(this.f_episodes);
+ 					for(let i; i < this.amount_of_episodes;i++)
+ 			     	{
+ 			     		this.f_episodes.pop();
+ 			     	}
+						console.log(this.f_episodes);						
+ 			     	});
+
+
+		     	}
   	  		});  		
   	  	});
   }

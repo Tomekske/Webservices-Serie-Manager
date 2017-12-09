@@ -18,21 +18,23 @@
 						</div>
 					</div>
 					<div class="season-margin">
-						<ul *ngFor="let item of fakeArray"> 
+						<ul *ngFor="let item of f_season;let season = index"> 
 							<div class="panel-group" id="accordion">
 								<div class="panel panel-default">
 									<div class="panel-heading">
 										<h4 class="panel-title">
 											<a data-toggle="collapse" 
 											   data-parent="#accordion" 
-											   href="#col{{item}}">
-											   Season {{ item + 1 }}
+											   href="#col{{season}}">
+											   Season {{ season + 1 }}
 											</a>
 										</h4>
 									</div>
 									<!-- dynamic id's -->
-									<div [attr.id]="'col'+ item" class="panel-collapse collapse out">
-										<div class="panel-body">Episode {{ item + 1 }}</div>
+									<div [attr.id]="'col'+ season" class="panel-collapse collapse out">
+											<ul *ngFor="let j of item">
+												<div class="panel-body">{{ j.title }}</div>
+											</ul>	
 									</div>
 								</div>
 							</div>

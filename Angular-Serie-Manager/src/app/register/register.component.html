@@ -7,7 +7,6 @@
         <div id="logo-container"></div>
         <div class="col-sm-12 col-md-4 col-md-offset-4">
           <form 
-          action="" 
           id="loginForm"
           #form="ngForm">
 
@@ -41,9 +40,9 @@
               </div>
             </div>
 
-            <!-- email input -->
-			<div class="form-group input-group">
-	            <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>              <!-- ngModel = control object-->
+              <!-- email input -->
+			      <div class="form-group input-group">
+              <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>              <!-- ngModel = control object-->
               <input
                    required
                    pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
@@ -103,12 +102,8 @@
                 class="btn btn-def btn-block"
                 [disabled]="!form.valid"
                 (click)="send()">
-                Login
+                Register
               </button>
-            </div>
-
-            <div class="form-group text-center">
-              <a routerLink="/register">Register</a>
             </div>
           </form>        
         </div>  

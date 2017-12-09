@@ -12,7 +12,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 class User(db.Model):
-	__tablename__ = 'user'
+	__tablename__ = 'users'
 	id = db.Column('id', db.Integer, primary_key=True)
 	username = db.Column('username', db.Unicode, primary_key=True)
 	email = db.Column('email', db.Unicode, primary_key=True) #varchar
@@ -34,7 +34,6 @@ def index():
 def users():
 	a = {} 
 	xx = []
-	print(type(xx))
 	ex = User.query.all()
 	i = 0
 	for x in ex:
@@ -56,10 +55,39 @@ def users():
 	#return resp
 	return jsonify(a)
 	#return Response(json.dumps(yy,ensure_ascii=False), mimetype='application/json;charset=utf-8')
+	
 	#return render_template('users.html', users = yy)
+@app.route("/users/delete", methods=['GET','DELETE'])
+@cross_origin()
+def users_delete():
+	id = request.args.get('id', type = int)
+	delelete_user = User.query.filter_by(id = id).first()
+	db.session.delete(delelete_user)
+	db.session.commit()
+	#return resp
+	return jsonify('OK')
+
+@app.route("/users/create", methods=['POST','GET','PUT'])
+@cross_origin()
+def users_create():
+	data = request.get_json()
+	
+	username = data['username']
+	email = data['email']
+	password = data['password']
+	insert = User(username,email,password)
+	db.session.add(insert)
+	db.session.commit()
+
+
+
+	return jsonify('OK')
+
+
+
 
 if __name__ == "__main__": #only start webserver if this file is called directly
-    app.run(debug=True)
+	app.run(debug=True)
 
 
 
