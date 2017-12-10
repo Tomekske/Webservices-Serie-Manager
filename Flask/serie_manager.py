@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, Response, jsonify
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import exc
 from collections import OrderedDict
 import json
 from flask_cors import CORS,cross_origin
@@ -11,18 +12,22 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root@localhost/serie_manager'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
+
+
 class User(db.Model):
 	__tablename__ = 'users'
 	id = db.Column('id', db.Integer, primary_key=True)
-	username = db.Column('username', db.Unicode, primary_key=True)
-	email = db.Column('email', db.Unicode, primary_key=True) #varchar
+	username = db.Column('username', db.Unicode)
+	email = db.Column('email', db.Unicode) #varchar
 	password = db.Column('password', db.Unicode)
+	admin = db.Column('admin', db.Integer)
 
-	def __init__(self, username, email, password): #constructor
+	def __init__(self, username, email, password,admin): #constructor
 		self.id = id
 		self.username = username
 		self.email = email
 		self.password = password
+		self.admin = admin
 
 @app.route("/")
 @cross_origin()
@@ -39,10 +44,11 @@ def users():
 	for x in ex:
 		i+=1
 		xx.append(
-				 {'id' : x.id,
+				 { 'id' : x.id,
 			       'username' : x.username,
 				   'email' : x.email,
-				   'password' : x.password
+				   'password' : x.password,
+				   'admin' : x.admin
 				})
 	a = {'total_results' : i, 'results' : xx}
 
@@ -67,21 +73,57 @@ def users_delete():
 	#return resp
 	return jsonify('OK')
 
-@app.route("/users/create", methods=['POST','GET','PUT'])
+@app.route("/users/create", methods=['POST'])
 @cross_origin()
 def users_create():
 	data = request.get_json()
-	
+	json_response = {}
+	json_username = {}
+	json_email = {}
+
+	print('First: ', json_response)
 	username = data['username']
 	email = data['email']
 	password = data['password']
-	insert = User(username,email,password)
-	db.session.add(insert)
-	db.session.commit()
+	print('username:',username)
+	print('email:',email)
+	
+	try:
+		json_response.update({'connection' : 'ok'})
+		
+		username_exists = db.session.query(db.exists().where(User.username == username)).scalar()
+		email_exists = db.session.query(db.exists().where(User.email == email)).scalar()
 
 
+		if (not username_exists) and (not email_exists):
+			json_response.update({'username' : 'ok'})
+			json_response.update({'email' : 'ok'})
 
-	return jsonify('OK')
+			insert = User(username,email,password,0)
+			db.session.add(insert)
+			db.session.commit()
+			print("Data inserted to db")
+
+		else:
+			if username_exists and not email_exists:
+				print("username bestaat")
+				json_response.update({'username' : 'exists'})
+				json_response.update({'email' : 'ok'})
+			elif not username_exists and email_exists:
+				print("email bestaat")
+				json_response.update({'username' : 'ok'})
+				json_response.update({'email' : 'exists'})
+			else:
+				print("beide bestaan")
+				json_response.update({'username' : 'exists'})
+				json_response.update({'email' : 'exists'})
+
+	except exc.IntegrityError as e:
+		json_response.update({'connection' : 'failed'})
+		#print(e)
+
+	print(json_response)
+	return jsonify(json_response)
 
 
 

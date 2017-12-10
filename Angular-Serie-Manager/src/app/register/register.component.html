@@ -28,7 +28,7 @@
 
             </div>
             <div
-              class="alert alert-danger"
+              class="alert alert-danger" 
               *ngIf="username.touched && !username.valid">
               <div
                 *ngIf="username.errors.required">
@@ -38,6 +38,12 @@
                 *ngIf="username.errors.pattern">
                 Invalid username.
               </div>
+
+            </div>
+            <div
+              class="alert alert-danger"
+              *ngIf="username_exists">
+              Username already exists.
             </div>
 
               <!-- email input -->
@@ -67,7 +73,11 @@
                 Invalid email.
               </div>
             </div>
-
+            <div
+              class="alert alert-danger input"
+              *ngIf="email_exists">
+              Email already exists.
+            </div>
             <!-- password input -->
             <div class="form-group input-group">
               <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
