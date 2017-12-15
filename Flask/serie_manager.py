@@ -274,8 +274,10 @@ def login():
 			print("Match found")
 			json_response.update({'results' : 'true'})
 			admin = User.query.filter_by(username = username,password = password).first()
+			id = admin.id
 			admin = bool(admin.admin);
-			print(admin)
+			json_response.update({'id' : id})
+
 			if admin:
 				json_response.update({'admin' : 'true'});
 			else:

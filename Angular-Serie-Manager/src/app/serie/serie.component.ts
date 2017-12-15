@@ -30,18 +30,7 @@ interface episodesPerSeason{
 	season_number: number
 }
 
-//-----------------------------------
 
-interface episodes {
-    ep_number: number,
-	title: string
-}
-
-// interface season {
-//     s_episodes: episodes[];
-// }
-
-//----------------------------------
 
 @Component({
   selector: 'app-serie',
@@ -62,36 +51,6 @@ export class SerieComponent implements OnInit {
 		title: string
 	}[] = [];
     
-    f_season: episodes[][] = [];
-	
-	// q_episodes:{
-	// 		ep_number: number,
-	// 		title: string
-	// 	}[] = [];
-
-	// q_season: {
-	// 	s_episodes: {
-	// 		[key: number] : episodes
-	// 	}
-
-	// }[] = [];
-
-
-	// test: season = {
-	// 	s_episodes: [{
-	// 		ep_number:1,
-	// 		title: "1 qqqq"
-	// 	},
-	// 	{
-	// 		ep_number:2,
-	// 		title: "2 qqqq"		
-	// 	},
-	// 	{
-	// 		ep_number:3,
-	// 		title: "3 qqqq"		
-	// 	}]
-	// };
-
 
 	id: number = 0;
 	serie = "";
@@ -117,6 +76,7 @@ export class SerieComponent implements OnInit {
   constructor(private route: ActivatedRoute,private http: HttpClient) { }
 
   ngOnInit() {
+
 
   	this.routeSub = this.route.params.subscribe(params =>{
   		this.name =	params['name'];	
@@ -150,54 +110,36 @@ export class SerieComponent implements OnInit {
 	  			{
 	  				this.fakeArray.push(i);		
 	  			}
-
-
-//--------------------------------------------------------------------------------
-
-
- 				for(let j = 1;j <= this.amount_of_seasons;j++)
- 				{
- 					this.wPost = this.http.get<episodesPerSeason>('https://api.themoviedb.org/3/tv/'+ this.id +'/season/'+ 1 +'?api_key=' + this.api_key).subscribe(serieInfo =>{
- 						this.amount_of_episodes = serieInfo.episodes.length;
-
-
- 						//console.log(this.amount_of_episodes);
- 						//console.log(serieInfo.episodes[j-1].name);
-
-						for(let i = 0;i < this.amount_of_episodes;i++)
-						{
-
-							this.f_episodes.push({
-							 	ep_number: serieInfo.episodes[i].episode_number,
-							 	title: serieInfo.episodes[i].name								
-							});
-
-						}
-						//console.log(j);
-
-
-						this.f_season.push(this.f_episodes);
- 					for(let i; i < this.amount_of_episodes;i++)
- 			     	{
- 			     		this.f_episodes.pop();
- 			     	}
-						console.log(this.f_episodes);						
- 			     	});
-
-
-		     	}
   	  		});  		
   	  	});
   }
+
+
+  	onChange(season) {
+    console.log(season);
+    this.wPost = this.http.get<episodesPerSeason>('https://api.themoviedb.org/3/tv/'+ this.id +'/season/'+ season +'?api_key=' + this.api_key).subscribe(serieInfo =>{
+ 		this.amount_of_episodes = serieInfo.episodes.length;
+ 		console.log(this.amount_of_episodes);
+
+ 		if(this.f_episodes.length != 0)
+ 		{
+ 			while(this.f_episodes.length > 0){
+ 				console.log("bezig");
+				this.f_episodes.pop();
+ 			}
+ 		}
+
+ 		for(let i = 0;i < this.amount_of_episodes; i++)
+ 		{
+ 			this.f_episodes.push({
+			 	ep_number: serieInfo.episodes[i].episode_number,
+			 	title: serieInfo.episodes[i].name	
+			});
+ 		}						
+ 	});
+}
     ngOnDestroy(){
   	this.routeSub.unsubscribe();
   }
 
 }
-// episodes:{
-// 		season: number,
-// 		ep_information:{
-// 			id: number,
-// 			title: string
-// 		}[]
-// 	}[] = [];

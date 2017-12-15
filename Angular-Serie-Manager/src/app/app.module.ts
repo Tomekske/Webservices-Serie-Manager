@@ -21,6 +21,7 @@ import { UsersComponent } from './users/users.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { UpdateComponent } from './update/update.component';
 import { LogoutComponent } from './logout/logout.component';
+import { CollectionComponent } from './collection/collection.component';
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import { LogoutComponent } from './logout/logout.component';
     UsersComponent,
     DashboardComponent,
     UpdateComponent,
-    LogoutComponent
+    LogoutComponent,
+    CollectionComponent
   ],
   imports: [
     BrowserModule,
@@ -56,7 +58,9 @@ import { LogoutComponent } from './logout/logout.component';
         { path: 'serie/:name', component: SerieComponent },
         { path: 'search/:name', component: SearchComponent },
         { path: 'dashboard', component: DashboardComponent },
-        { path: 'dashboard/update/:id', component: UpdateComponent }
+        { path: 'dashboard/update/:id', component: UpdateComponent },
+        { path: 'collection', component: CollectionComponent },
+        { path: 'collection/:id', component: CollectionComponent }
     ])
   ],
   providers: [AutorisationService],

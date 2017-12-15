@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute,Router, Params } from '@angular/router';
+import { AutorisationService } from '../autorisation.service';
 
 interface Users{
 	total_results: number,
@@ -24,6 +25,7 @@ export class DashboardComponent implements OnInit {
   httpObs: Observable<any>;
   lll = '';
 	posts: any;
+  admin = false;
   baseUrl = 'http://localhost:5000/users/delete?id=';
 	users: {
     	id: number,
@@ -32,9 +34,15 @@ export class DashboardComponent implements OnInit {
     	password: string
     	admin: boolean
   	}[] = [];
-  constructor(private http: HttpClient,private route: ActivatedRoute, private router: Router) { }
+  constructor(private http: HttpClient,private route: ActivatedRoute, private router: Router,private autor: AutorisationService) { }
 
   ngOnInit() {
+      this.autor.admin.subscribe((admin) =>{
+        if(!admin){
+          this.router.navigate(["/"]);
+        }
+      });
+
   		this.posts = this.http.get<Users>('http://localhost:5000/users').subscribe(data =>{
   			console.log(data)
        if(data['connection'] === 'true')

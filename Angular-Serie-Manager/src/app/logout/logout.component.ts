@@ -14,6 +14,8 @@ export class LogoutComponent implements OnInit {
 
   ngOnInit() {
   	this.autor.setLogin(false);
+  	this.autor.setAdmin(false);
+    this.autor.setId(0);
   	this.router.navigate(["/"]);
   }
 

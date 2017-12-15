@@ -12,6 +12,11 @@ export class AutorisationService {
   private src_login = new BehaviorSubject<boolean>(false);
   login = this.src_login.asObservable();
 
+  private src_admin = new BehaviorSubject<boolean>(false);
+  admin = this.src_admin.asObservable();
+
+  private src_id = new BehaviorSubject<number>(0);
+  id = this.src_id.asObservable();
 	request = {
   		username : "",
   		password : "",
@@ -28,5 +33,13 @@ export class AutorisationService {
 
   setLogin(sLogin: boolean){
   	this.src_login.next(sLogin);
+  }
+
+  setAdmin(sAdmin: boolean){
+    this.src_admin.next(sAdmin);
+  }
+
+  setId(sId: number){
+    this.src_id.next(sId);
   }
 }

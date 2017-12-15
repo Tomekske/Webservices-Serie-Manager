@@ -10,36 +10,29 @@
 						<div class="col-md-12 panelTop">	
 							<div class="col-md-4">	
 								<img class="img-responsive" src="{{ item.url }}" alt="No Poster"/>
+								<div class="top-buffer">
+									
+									<button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Add to collection</button>
+								</div>
 							</div>
 							<div class="col-md-8">	
 								<h2>{{ item.serie }}</h2>
 								<p>{{ item.description }}</p>
 							</div>
 						</div>
-					</div>
-					<div class="season-margin">
-						<ul *ngFor="let item of f_season;let season = index"> 
-							<div class="panel-group" id="accordion">
-								<div class="panel panel-default">
-									<div class="panel-heading">
-										<h4 class="panel-title">
-											<a data-toggle="collapse" 
-											   data-parent="#accordion" 
-											   href="#col{{season}}">
-											   Season {{ season + 1 }}
-											</a>
-										</h4>
-									</div>
-									<!-- dynamic id's -->
-									<div [attr.id]="'col'+ season" class="panel-collapse collapse out">
-											<ul *ngFor="let j of item">
-												<div class="panel-body">{{ j.title }}</div>
-											</ul>	
-									</div>
-								</div>
-							</div>
+						 
+						<select class="selectpicker top-buffer season_selector" 
+								[(ngModel)]="season"
+             		 			name="season"
+             		 			(change)="onChange($event.target.value)">
+							<option 
+								*ngFor="let season of fakeArray"> {{ season + 1 }}
+							</option>
+						</select>
+						<ul class="list-group" *ngFor="let episode of f_episodes">
+						  <li class="list-group-item">{{ episode.ep_number }}. {{ episode.title }}</li>
 						</ul>
-				    </div>
+					</div>
 				</div>
 			</div>
 		</div>

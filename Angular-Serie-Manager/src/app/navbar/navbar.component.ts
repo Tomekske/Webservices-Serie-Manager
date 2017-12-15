@@ -16,6 +16,7 @@ export class NavbarComponent implements OnInit {
 	y_search: string;
     sub: Subscription;
     login = false;
+    admin = false;
   constructor(private route: ActivatedRoute,private router: Router,private autor: AutorisationService) {
 
    }
@@ -23,6 +24,11 @@ export class NavbarComponent implements OnInit {
 	  ngOnInit() {
 			this.sub = this.autor.login.subscribe((login) => {
 				this.login = login;
+			});
+			
+			this.autor.admin.subscribe((admin) =>{
+				console.log('admin',admin);
+				this.admin = admin;
 			});
 	  }
 

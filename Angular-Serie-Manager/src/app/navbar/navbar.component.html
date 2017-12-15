@@ -14,7 +14,7 @@
 				<li><a routerLink="">Home</a></li>
 				<li><a routerLink="/popular">Popular</a></li>
 				<li><a routerLink="/contact">Contact</a></li>
-				<li><a routerLink="/dashboard">Dasboard</a></li>
+				<li *ngIf="admin"><a routerLink="/dashboard">Dasboard</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li *ngIf="!login">

@@ -14,6 +14,7 @@ export class LoginComponent implements OnInit {
   httpObs: any;
 
   failed = false;
+
   login = {
     sentUsername: "",
     sentPassword: ""
@@ -32,15 +33,22 @@ export class LoginComponent implements OnInit {
     this.autor.login_user(this.sUsername,this.sPassword);
     this.httpObs = this.autor.login_user(this.login.sentUsername,this.login.sentPassword);
     this.httpObs.subscribe(res =>{
-
+      
+      console.log(res);
       if(res['connection'] === 'true')
       {
         if(res['results'] === 'true')
         {
           this.failed = false;
           this.autor.setLogin(true);
-          this.router.navigate(["/"]);
+          this.autor.setId(res['id']);
 
+          if(res['admin'] === 'true')
+          {
+            this.autor.setAdmin(true);
+          }
+
+          this.router.navigate(["/"]);
         }
         else{
           this.autor.setLogin(false);
