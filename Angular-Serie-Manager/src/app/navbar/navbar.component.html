@@ -17,7 +17,12 @@
 				<li><a routerLink="/dashboard">Dasboard</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
-				<li><a routerLink="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+				<li *ngIf="!login">
+					<a routerLink="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a>
+				</li>
+				<li *ngIf="login">
+					<a routerLink="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
+				</li>
 			</ul>
 			<ul class="nav navbar-nav spacing">
 				<div class="container spacing">
@@ -44,5 +49,3 @@
 		</div>
 	</div>
 </nav>
-
-<p>	{{ post }} </p>

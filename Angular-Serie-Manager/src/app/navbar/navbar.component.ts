@@ -1,7 +1,8 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Params,Router } from '@angular/router';
-
+import { Subscription } from 'rxjs/Subscription';
+import { AutorisationService } from '../autorisation.service';
 
 @Component({
   selector: 'app-navbar',
@@ -13,14 +14,16 @@ export class NavbarComponent implements OnInit {
 	baseSearch = '/search/';
 	fullSearch = '';
 	y_search: string;
-	@Output() query = new EventEmitter<string>();
-
-  constructor(private route: ActivatedRoute,private router: Router) {
+    sub: Subscription;
+    login = false;
+  constructor(private route: ActivatedRoute,private router: Router,private autor: AutorisationService) {
 
    }
 
 	  ngOnInit() {
-
+			this.sub = this.autor.login.subscribe((login) => {
+				this.login = login;
+			});
 	  }
 
 
@@ -47,7 +50,6 @@ export class NavbarComponent implements OnInit {
 
 //		console.log(search);
 //		console.log(this.fullSearch);
-		this.query.emit(this.search);
 	}
 
 }

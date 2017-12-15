@@ -5,6 +5,8 @@ import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
+import { AutorisationService } from './autorisation.service';
+
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -17,6 +19,8 @@ import { SerieComponent } from './serie/serie.component';
 import { SearchComponent } from './search/search.component';
 import { UsersComponent } from './users/users.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { UpdateComponent } from './update/update.component';
+import { LogoutComponent } from './logout/logout.component';
 
 
 @NgModule({
@@ -33,7 +37,9 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     SerieComponent,
     SearchComponent,
     UsersComponent,
-    DashboardComponent
+    DashboardComponent,
+    UpdateComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,
@@ -44,14 +50,16 @@ import { DashboardComponent } from './dashboard/dashboard.component';
         { path: '', component: HomeComponent },
         { path: 'contact', component: ContactComponent },
         { path: 'login', component: LoginComponent },
+        { path: 'logout', component: LogoutComponent },
         { path: 'register', component: RegisterComponent },
         { path: 'popular', component: PopularComponent },
         { path: 'serie/:name', component: SerieComponent },
         { path: 'search/:name', component: SearchComponent },
-        { path: 'dashboard', component: DashboardComponent }
+        { path: 'dashboard', component: DashboardComponent },
+        { path: 'dashboard/update/:id', component: UpdateComponent }
     ])
   ],
-  providers: [],
+  providers: [AutorisationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

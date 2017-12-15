@@ -36,22 +36,32 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
   		this.posts = this.http.get<Users>('http://localhost:5000/users').subscribe(data =>{
-  			//this.users.push(data);
-  			console.log(data.total_results);
-  			for(let i = 0; i < data.total_results;i++)
-  			{
-  				this.users.push({
-  						id: data.results[i].id,
-    					username: data.results[i].username,
-    					email: data.results[i].email,
-    					password: data.results[i].password,
-    					admin: data.results[i].admin});
-  			}  					
+  			console.log(data)
+       if(data['connection'] === 'true')
+       {
+        for(let i = 0; i < data.total_results;i++)
+        {
+          this.users.push({
+              id: data.results[i].id,
+              username: data.results[i].username,
+              email: data.results[i].email,
+              password: data.results[i].password,
+              admin: data.results[i].admin});
+        }
+       }
+
+       else
+       {
+         console.log('could not connect')
+       }
+
+  					
   		});
   	}
 
     update_user(id){
             console.log("update:",id);
+            this.router.navigate(['/dashboard/update/'+ id]);
 
     }
 
@@ -60,10 +70,17 @@ export class DashboardComponent implements OnInit {
       console.log("delete",id);
       console.log(this.baseUrl+id);
       this.http.delete(this.baseUrl+id).subscribe(data =>{
-        console.log(data);
-        this.route.params.subscribe( () => {
-           location.reload();        
-         });
+
+        if(data['connection'] === 'true')
+        {
+          this.route.params.subscribe( () => {
+             location.reload();        
+           });   
+        }
+        else
+        {
+          console.log('could not connect');          
+        }
       });
     }
 }

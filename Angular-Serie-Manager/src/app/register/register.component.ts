@@ -37,7 +37,7 @@ export class RegisterComponent implements OnInit {
     this.http.post(this.baseUrl, JSON.stringify(this.register),{headers: new HttpHeaders().set('Content-Type', 'application/json')})
       .subscribe(res => {
               console.log(res);
-              if(res['connection'] === "ok")
+              if(res['connection'] === "true")
               {
                 if((res['username'] == "ok") && (res['email'] == "ok")){
                   this.router.navigate(['/login']);
@@ -52,8 +52,8 @@ export class RegisterComponent implements OnInit {
                 }
                 else if((res['username'] == "exists") && (res['email'] == "ok")){
                   console.log("username exists");
-                  this.email_exists = true;
-                  this.username_exists = false;
+                  this.email_exists = false;
+                  this.username_exists = true;
 
                 }
                 else{
@@ -66,9 +66,9 @@ export class RegisterComponent implements OnInit {
                 console.log("shit");
               }
              // this.router.navigate(['/login']);
-
-
         },
       );
   }
+
+
 }

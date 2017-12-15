@@ -1,5 +1,5 @@
 <div class="col-sm-8 text-left"> 
-  <h1>Login</h1>
+  <h1>Update</h1>
   <hr>
   <div class="container-fluid">
     <div class="row">
@@ -7,7 +7,6 @@
         <div id="logo-container"></div>
         <div class="col-sm-12 col-md-4 col-md-offset-4">
           <form 
-          action="" 
           id="loginForm"
           #form="ngForm">
 
@@ -23,13 +22,13 @@
                    #username="ngModel"
                    class="form-control" 
                    type="text" 
-                   name='username'
+                   name='username' 
                    [(ngModel)]="sUsername" 
                    placeholder="username"/> 
 
             </div>
             <div
-              class="alert alert-danger"
+              class="alert alert-danger" 
               *ngIf="username.touched && !username.valid">
               <div
                 *ngIf="username.errors.required">
@@ -39,9 +38,46 @@
                 *ngIf="username.errors.pattern">
                 Invalid username.
               </div>
+
+            </div>
+            <div
+              class="alert alert-danger"
+              *ngIf="username_exists">
+              Username already exists.
             </div>
 
-
+              <!-- email input -->
+			      <div class="form-group input-group">
+              <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>              <!-- ngModel = control object-->
+              <input
+                   required
+                   pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
+                   ngModel 
+                   name= "email"
+                   #email="ngModel"
+                   class="form-control" 
+                   type="text" 
+                   name='email'
+                   [(ngModel)]="sEmail"  
+                   placeholder="email"/> 
+            </div>
+            <div
+              class="alert alert-danger"
+              *ngIf="email.touched && !email.valid">
+              <div
+                *ngIf="email.errors.required">
+                email is required.
+              </div>
+              <div
+                *ngIf="email.errors.pattern">
+                Invalid email.
+              </div>
+            </div>
+            <div
+              class="alert alert-danger input"
+              *ngIf="email_exists">
+              Email already exists.
+            </div>
             <!-- password input -->
             <div class="form-group input-group">
               <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
@@ -52,7 +88,7 @@
                    name= "password"
                    #password="ngModel"
                    class="form-control" 
-                   type="password" 
+                   type="text" 
                    name='password'
                    [(ngModel)]="sPassword"  
                    placeholder="password"/>  
@@ -60,30 +96,36 @@
             <div
               class="alert alert-danger"
               *ngIf="password.touched && !password.valid">
-              <div *ngIf="password.errors.required">
+              <div
+                *ngIf="password.errors.required">
                 Password is required.
               </div>
-              <div *ngIf="password.errors.pattern">
+              <div
+                *ngIf="password.errors.pattern">
                 Invalid password.
               </div>
             </div>
-            <div 
-                *ngIf="failed"
-                class="alert alert-danger">
-              Failed to login!
+            <!-- Admin -->
+            <div class="form-group input-group">
+              <span class="input-group-addon"><i class="glyphicon glyphicon-alert"></i></span>
+             <select [(ngModel)]="sAdmin"
+             		 name="admin"
+             		 class="form-control" 
+             		 id="sel1">
+      			    <option name="false">False</option>
+      			    <option name="true">True</option>
+      			  </select>
             </div>
             <div class="form-group">
               <button 
-                    type="button" 
-                    class="btn btn-def btn-block"
-                    [disabled]="!form.valid"
-                    (click)="send()">
-                Login
+                type="button" 
+                class="btn btn-def btn-block"
+                [disabled]="!form.valid"
+                (click)="send()">
+                Update
               </button>
             </div>
-            <div class="form-group text-center">
-              <a routerLink="/register">Register</a>
-            </div>
+
           </form>        
         </div>  
       </div>    
