@@ -1,3 +1,26 @@
-<p>
-  collection works!
-</p>
+<div class="col-sm-8 text-left"> 
+  <h1>Collection</h1>
+  <hr>
+   <ul *ngFor="let item of collection; let i = index">
+      <div class="container">    
+		<div class="row">
+			<div class="col-md-8">				
+				<div class="panel panel-default  panel--styled">
+					<div class="panel-body">
+						<div class="col-md-12 panelTop">	
+							<div class="col-md-4">	
+								<img class="img-responsive" src="{{ item.picture }}" alt=""/>
+							</div>
+							<div class="col-md-8">	
+								<h2>{{ i+1 }}. 
+								<a routerLink="/serie/{{ item.title }}">{{ item.title }} </a></h2>
+								<p>{{ item.description }}</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+    </div>
+  </ul>
+</div>

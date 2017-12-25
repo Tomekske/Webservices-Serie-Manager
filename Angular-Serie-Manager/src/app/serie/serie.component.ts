@@ -1,6 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { RequestOptions } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
+import { ActivatedRoute,Router, Params } from '@angular/router';
+import { AutorisationService } from '../autorisation.service';
 
 interface basicInformation{
 	 results: { 
@@ -31,7 +34,6 @@ interface episodesPerSeason{
 }
 
 
-
 @Component({
   selector: 'app-serie',
   templateUrl: './serie.component.html',
@@ -50,8 +52,19 @@ export class SerieComponent implements OnInit {
 		ep_number: number,
 		title: string
 	}[] = [];
-    
 
+	collection:{
+		title: string,
+		description: string,
+		picture: string,
+		user_id: number
+	} = {
+		title: '',
+		description: '',
+		picture: '',
+		user_id: 0	};
+    
+	user_id = 0;
 	id: number = 0;
 	serie = "";
 	description = "";
@@ -73,10 +86,12 @@ export class SerieComponent implements OnInit {
 
 
 
-  constructor(private route: ActivatedRoute,private http: HttpClient) { }
+  constructor(private route: ActivatedRoute,private http: HttpClient,private autor: AutorisationService) { }
 
   ngOnInit() {
-
+	this.autor.id.subscribe((id) =>{
+        this.user_id = id;
+    });
 
   	this.routeSub = this.route.params.subscribe(params =>{
   		this.name =	params['name'];	
@@ -123,10 +138,7 @@ export class SerieComponent implements OnInit {
 
  		if(this.f_episodes.length != 0)
  		{
- 			while(this.f_episodes.length > 0){
- 				console.log("bezig");
-				this.f_episodes.pop();
- 			}
+ 			this.f_episodes.length = 0;
  		}
 
  		for(let i = 0;i < this.amount_of_episodes; i++)
@@ -138,6 +150,21 @@ export class SerieComponent implements OnInit {
  		}						
  	});
 }
+
+
+	addToCollection(title: string, description: string, picture: string){
+		console.log(title);
+		console.log(description);
+		console.log('foto', picture);
+		this.collection.title = title;
+		this.collection.description = description;
+		this.collection.picture = picture;
+		this.collection.user_id = this.user_id;
+		    this.http.post('http://localhost:5000/collection/add', JSON.stringify(this.collection),{headers: new HttpHeaders().set('Content-Type', 'application/json')})
+      .subscribe(res => {
+  		console.log(res); 
+      });
+	}
     ngOnDestroy(){
   	this.routeSub.unsubscribe();
   }

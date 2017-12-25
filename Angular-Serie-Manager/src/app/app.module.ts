@@ -60,7 +60,6 @@ import { CollectionComponent } from './collection/collection.component';
         { path: 'dashboard', component: DashboardComponent },
         { path: 'dashboard/update/:id', component: UpdateComponent },
         { path: 'collection', component: CollectionComponent },
-        { path: 'collection/:id', component: CollectionComponent }
     ])
   ],
   providers: [AutorisationService],

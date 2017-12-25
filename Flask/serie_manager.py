@@ -20,13 +20,26 @@ class User(db.Model):
 	email = db.Column('email', db.Unicode) #varchar
 	password = db.Column('password', db.Unicode)
 	admin = db.Column('admin', db.Integer)
-
+#	collections = db.relationship('Collection', backref='owner', lazy='dynamic')
 	def __init__(self, username, email, password,admin): #constructor
 		self.id = id
 		self.username = username
 		self.email = email
 		self.password = password
 		self.admin = admin
+
+class Collection(db.Model):
+	__tablename__ = 'collection'
+	id = db.Column('id',db.Integer, primary_key=True)
+	user_id = db.Column('user_id',db.Unicode)
+	title = db.Column('title', db.Unicode)
+	description = db.Column('description', db.Unicode)
+	picture = db.Column('picture', db.Unicode)
+	def __init__(self,user_id,title,description,picture):
+		self.user_id = user_id
+		self.title = title
+		self.description = description
+		self.picture = picture
 
 @app.route("/")
 @cross_origin()
@@ -161,15 +174,10 @@ def single_user():
 
 		json_response.update({"connection" : "true"})
 
-
-
-
 		username = user_info.username
 		email = user_info.email
 		password = user_info.password 
 		admin = user_info.admin
-
-		
 
 		json_response.update({"username" : username})
 		json_response.update({"email" : email})
@@ -203,8 +211,6 @@ def update_users():
 		print(password)
 		print(admin)
 
-		check_username = User.query.filter_by(username = username).count()
-		check_username = bool(check_username) #convert to boolean
 
 		check_email = User.query.filter_by(email = email).count()
 		check_email = bool(check_email) #convert to boolean
@@ -289,7 +295,87 @@ def login():
 	return jsonify(json_response)
 
 
+@app.route("/collection", methods=['GET','POST'])
+@app.route("/collection/get", methods=['GET','POST'])
+@cross_origin()
+def collection():
+	json_response = {}
+	all_series = []
 
+	id = request.args.get('id', type = int)
+	print("id:", id)
+
+	try:
+		check_collection = Collection.query.filter_by(user_id = id).count() #check if collection exsists
+		check_collection = bool(check_collection) #convert to boolean
+		json_response.update({'connection' : 'true'})
+
+		if(check_collection):
+			json_response.update({'user_id' : 'true'});
+
+			col = Collection.query.filter_by(user_id = id).all()
+			i = 0
+			for serie in col:
+				i +=1
+				all_series.append(
+						{
+							'title' : serie.title,
+							'description' : serie.description,
+							'picture' : serie.picture
+						}
+					)
+					
+			json_response.update({'collection' : all_series});
+			json_response.update({'total_results' : i});
+
+		else:
+			json_response.update({'user_id' : 'false'});
+		
+	
+	except:
+		json_response.update({'connection' : 'false'})
+		json_response.update({'user_id' : 'false'});
+	return jsonify(json_response)
+	#q = Collection.query.filter_by(user_id='109').all()
+	# q = User.query.filter_by(id='109').all()
+	# for i in q:
+	# 	print(i.title)
+
+	result = db.engine.execute("SELECT * FROM users INNER JOIN collection ON users.id = collection.user_id")
+	for i in result:
+		print(i.title)
+	return 'oke'
+
+@app.route("/collection/add", methods=['GET','POST'])
+@cross_origin()
+def addCollection():
+	json_response = {}
+
+	data = request.get_json()
+
+	user_id = data['user_id']
+	title = data['title']
+	description = data['description']
+	picture = data['picture']
+	print(user_id)
+	print(title)
+	print(description)
+	print(picture)
+
+	try:		
+		insert = Collection(user_id,title,description,picture)
+		db.session.add(insert)
+		db.session.commit()
+		print("Data inserted to db")
+
+		json_response.update({'connection' : 'true'})
+		json_response.update({'inserted' : 'true'})
+	except:
+		json_response.update({'connection' : 'false'})
+		json_response.update({'inserted' : 'false'})
+
+	print(json_response)
+	return jsonify(json_response)
 
 if __name__ == "__main__": #only start webserver if this file is called directly
 	app.run(debug=True)

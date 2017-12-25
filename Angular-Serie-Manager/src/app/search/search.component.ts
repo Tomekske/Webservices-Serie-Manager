@@ -36,23 +36,25 @@ export class SearchComponent implements OnInit {
   constructor(private route: ActivatedRoute,private http: HttpClient,private router: Router) { }
 
 
-  ngOnInit() {
-  		console.log("ok");
-  	  	this.routeSub = this.route.params.subscribe(params =>{
-  			this.name =	params['name'];	
-  			this.router.navigate(["/search/"+this.name]);
+	ngOnInit() {
+			this.routeSub = this.route.params.subscribe(params =>{
+			this.name =	params['name'];	
+			console.log('serie:',this.name);
+			this.fetchdata(this.name);		
+		});
+  	}
 
-  		});
+  	fetchdata(name: string){
 
-
-this.posts = this.http.get<searchSerie>('http://api.themoviedb.org/3/search/tv?page=1&query='+ this.name +'&language=en-US&api_key=a7fbc4b37ef74e87e3d943a1fa2df6b1').subscribe(data =>{
-  		this.tot_results = data.total_results;	
-	    for(let i=0;i< this.tot_results;i++)
-	    {
-	   		this.pictureFullUrl = this.pictureBaseUrl + data.results[i].poster_path;
-	   		this.serie.push({ name: data.results[i].name, description: data.results[i].overview, url: this.pictureFullUrl });
-//	    	console.log("Title:",data.results[i].name);
-	    }
- 	 });
-  }
+		this.posts = this.http.get<searchSerie>('http://api.themoviedb.org/3/search/tv?page=1&query='+ name +'&language=en-US&api_key=a7fbc4b37ef74e87e3d943a1fa2df6b1').subscribe(data =>{
+	  		this.tot_results = data.total_results;
+	  		this.serie.length = 0;
+		    for(let i=0;i< this.tot_results;i++)
+		    {
+		   		this.pictureFullUrl = this.pictureBaseUrl + data.results[i].poster_path;
+		   		console.log(this.pictureFullUrl);
+		   		this.serie.push({ name: data.results[i].name, description: data.results[i].overview, url: this.pictureFullUrl });
+		    }
+	 	});  		
+  	}
 }

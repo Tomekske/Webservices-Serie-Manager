@@ -21,16 +21,16 @@ export class NavbarComponent implements OnInit {
 
    }
 
-	  ngOnInit() {
-			this.sub = this.autor.login.subscribe((login) => {
-				this.login = login;
-			});
-			
-			this.autor.admin.subscribe((admin) =>{
-				console.log('admin',admin);
-				this.admin = admin;
-			});
-	  }
+	ngOnInit(){
+		this.sub = this.autor.login.subscribe((login) => {
+			this.login = login;
+		});
+		
+		this.autor.admin.subscribe((admin) =>{
+			console.log('admin',admin);
+			this.admin = admin;
+		});
+	}
 
 
 	sendQuery(search){
@@ -39,23 +39,5 @@ export class NavbarComponent implements OnInit {
   			this.router.navigate([this.fullSearch]);
   			console.log("hier");
   		});
-
-//		this.route.params.subscribe(params =>{
-//		});	
-
-
-//		this.route.params.subscribe((params: Params) =>{
-//			this.fullSearch = '';
-//			this.y_search = params['search'];
-//		    this.fullSearch = this.baseSearch + this.search;
-//		   console.log('y-search',this.y_search);
-//		    console.log('url',this.fullSearch);
-			//params.navigate([this.fullSearch]);
-			
-//		});
-
-//		console.log(search);
-//		console.log(this.fullSearch);
 	}
-
 }
