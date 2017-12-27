@@ -83,50 +83,93 @@ export class SerieComponent implements OnInit {
     api_key = 'a7fbc4b37ef74e87e3d943a1fa2df6b1';
 
     fakeArray=[];
+    login = false;
+    check_collection ={
+    	title: "",
+    	user_id: 0
+    };
 
-
+    col = false;
 
   constructor(private route: ActivatedRoute,private http: HttpClient,private autor: AutorisationService) { }
 
   ngOnInit() {
 	this.autor.id.subscribe((id) =>{
         this.user_id = id;
+
+	  	this.routeSub = this.route.params.subscribe(params =>{
+	  		this.name =	params['name'];	
+	  		
+	  	 });
+	  	 this.check_collection.title = this.name;
+  	     this.check_collection.user_id = this.user_id;
+         this.autor.login.subscribe((login) =>{
+    		if(login === true)
+    		{
+    			this.login = true;
+    			this.http.post('http://localhost:5000/collection/check', JSON.stringify(this.check_collection),{headers: new HttpHeaders().set('Content-Type', 'application/json')})
+      			.subscribe(res => {
+      			console.log(res);
+		  		if(res['connection'] === 'true')
+		  		{
+		  			if(res['collection'] === 'true')
+		  			{
+		  				this.col = true;
+		  			}
+
+		  			else
+		  			{
+		  				this.col = false;
+		  			}
+		  		}
+
+		  		else
+		  		{
+		  			alert("Could not connect to database!");
+		  		}
+		      });
+	    	}
+	    	else
+	    	{
+	    		this.login = false;
+	    	}
+   		 });
+
     });
-
-  	this.routeSub = this.route.params.subscribe(params =>{
-  		this.name =	params['name'];	
-  		
-  	 })
-
-	  	this.posts = this.http.get<basicInformation>('http://api.themoviedb.org/3/search/tv?page=1&query='+ this.name +'&language=en-US&api_key=' + this.api_key).subscribe(data =>{
-   			this.id = data.results[0].id;
-   			this.serie = data.results[0].name;
-   			this.description = data.results[0].overview;
-
-   			console.log('id',this.id);
-   			this.fullUrl = this.baseUrl + this.id + this.api_key;
-   			this.pictureFullUrl = this.pictureBaseUrl + data.results[0].poster_path;
-
-   			//next http request
-	  		this.nPost = this.http.get<advancedInformation>('http://api.themoviedb.org/3/tv/'+ this.id +'?api_key=' + this.api_key).subscribe(advInfo =>{
-  				this.amount_of_seasons = advInfo.number_of_seasons;
-  				//this.amount_of_seasons = 5;
-
-	  			this.serie_information.push({
-	  				serie: this.serie,
-	  				id: this.id,
-	  				description: this.description,
-	  				seasons_amount: this.amount_of_seasons,
-	  				url: this.pictureFullUrl
-	  			});
+    
 
 
-	  			for(let i = 0;i < this.amount_of_seasons;i++)
-	  			{
-	  				this.fakeArray.push(i);		
-	  			}
-  	  		});  		
-  	  	});
+
+  	
+
+	this.posts = this.http.get<basicInformation>('http://api.themoviedb.org/3/search/tv?page=1&query='+ this.name +'&language=en-US&api_key=' + this.api_key).subscribe(data =>{
+		this.id = data.results[0].id;
+		this.serie = data.results[0].name;
+		this.description = data.results[0].overview;
+
+		console.log('id',this.id);
+		this.fullUrl = this.baseUrl + this.id + this.api_key;
+		this.pictureFullUrl = this.pictureBaseUrl + data.results[0].poster_path;
+
+		//next http request
+		this.nPost = this.http.get<advancedInformation>('http://api.themoviedb.org/3/tv/'+ this.id +'?api_key=' + this.api_key).subscribe(advInfo =>{
+			this.amount_of_seasons = advInfo.number_of_seasons;
+
+			this.serie_information.push({
+				serie: this.serie,
+				id: this.id,
+				description: this.description,
+				seasons_amount: this.amount_of_seasons,
+				url: this.pictureFullUrl
+			});
+
+
+			for(let i = 0;i < this.amount_of_seasons;i++)
+			{
+				this.fakeArray.push(i);		
+			}
+		});  		
+	});
   }
 
 
@@ -153,17 +196,37 @@ export class SerieComponent implements OnInit {
 
 
 	addToCollection(title: string, description: string, picture: string){
-		console.log(title);
-		console.log(description);
-		console.log('foto', picture);
-		this.collection.title = title;
-		this.collection.description = description;
-		this.collection.picture = picture;
-		this.collection.user_id = this.user_id;
+		if(this.col === true)
+		{
+			console.log("hier");
+			this.http.delete("http://localhost:5000/collection/delete?id=" + this.user_id + "&" + "title=" + this.name).subscribe(data =>{
+
+				if(data['connection'] === 'true')
+				{
+				  this.col = false;  
+				}
+				else
+				{
+				  console.log('could not connect');          
+				}
+			});
+		}
+
+		else
+		{
+			console.log("daar");
+
+			this.col = true;
+			this.collection.title = title;
+			this.collection.description = description;
+			this.collection.picture = picture;
+			this.collection.user_id = this.user_id;
 		    this.http.post('http://localhost:5000/collection/add', JSON.stringify(this.collection),{headers: new HttpHeaders().set('Content-Type', 'application/json')})
-      .subscribe(res => {
-  		console.log(res); 
-      });
+      		.subscribe(res => {
+  				console.log(res); 
+     		 });
+		}
+		
 	}
     ngOnDestroy(){
   	this.routeSub.unsubscribe();

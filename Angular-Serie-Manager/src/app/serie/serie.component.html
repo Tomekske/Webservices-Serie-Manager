@@ -10,12 +10,21 @@
 						<div class="col-md-12 panelTop">	
 							<div class="col-md-4">	
 								<img class="img-responsive" src="{{ item.url }}" alt="No Poster"/>
-								<div class="top-buffer">
-									<button type="button" 
-											class="btn btn-primary"
-											(click)="addToCollection(item.serie,item.description,item.url)">
-											<span class="glyphicon glyphicon-plus"></span> Add to collection
-									</button>
+								<div class="top-buffer" *ngIf="login">
+									<div *ngIf="col">
+										<button type="button" 
+												class="btn btn-danger"
+												(click)="addToCollection(item.serie,item.description,item.url)">
+												<span class="glyphicon glyphicon-minus"></span> Remove
+										</button>
+									</div>
+									<div *ngIf="!col">
+										<button type="button" 
+												class="btn btn-primary"
+												(click)="addToCollection(item.serie,item.description,item.url)">
+												<span class="glyphicon glyphicon-plus"></span> Add 
+										</button>
+									</div>
 								</div>
 							</div>
 							<div class="col-md-8">	

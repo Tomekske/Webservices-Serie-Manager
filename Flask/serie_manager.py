@@ -303,13 +303,13 @@ def collection():
 	all_series = []
 
 	id = request.args.get('id', type = int)
-	print("id:", id)
+
 
 	try:
 		check_collection = Collection.query.filter_by(user_id = id).count() #check if collection exsists
 		check_collection = bool(check_collection) #convert to boolean
 		json_response.update({'connection' : 'true'})
-
+		print("controleer:", check_collection)
 		if(check_collection):
 			json_response.update({'user_id' : 'true'});
 
@@ -330,21 +330,11 @@ def collection():
 
 		else:
 			json_response.update({'user_id' : 'false'});
-		
-	
 	except:
 		json_response.update({'connection' : 'false'})
 		json_response.update({'user_id' : 'false'});
 	return jsonify(json_response)
-	#q = Collection.query.filter_by(user_id='109').all()
-	# q = User.query.filter_by(id='109').all()
-	# for i in q:
-	# 	print(i.title)
 
-	result = db.engine.execute("SELECT * FROM users INNER JOIN collection ON users.id = collection.user_id")
-	for i in result:
-		print(i.title)
-	return 'oke'
 
 @app.route("/collection/add", methods=['GET','POST'])
 @cross_origin()
@@ -375,6 +365,78 @@ def addCollection():
 		json_response.update({'inserted' : 'false'})
 
 	print(json_response)
+	return jsonify(json_response)
+@app.route("/collection/check", methods=['GET','POST'])
+@cross_origin()
+
+def checkCollection():
+	json_response = {}
+	data = request.get_json()
+
+	serie = data['title']
+	id = data['user_id']
+
+	print('serieeeee:', serie)
+	print('idddd:', id)
+
+	try:
+		check_collection =  Collection.query.filter_by(title = serie,user_id = id).count()
+		check_collection = bool(check_collection) #convert to boolean
+		json_response.update({'connection' : 'true'})
+
+		if check_collection:
+			json_response.update({'collection' : 'true'})
+		else:
+			json_response.update({'collection' : 'false'})
+
+		
+	except:
+		json_response.update({'connection' : 'false'})
+		json_response.update({'collection' : 'false'})
+
+
+	print("serie:", serie)
+	print("id:", id)
+	print("collection:",check_collection)
+	return jsonify(json_response)
+
+@app.route("/collection/delete", methods=['GET','POST','DELETE'])
+@cross_origin()
+
+def deleteCollection():
+	json_response = {}
+#	data = request.get_json()
+
+#	serie = data['title']
+#	id = data['user_id']
+
+	id = request.args.get('id', type = int)
+	serie = request.args.get('title', type = str)
+
+	print("del serie:", serie)
+	print("del id:", id)
+
+	try:
+		check_collection =  Collection.query.filter_by(title = serie,user_id = id).count()
+		check_collection = bool(check_collection) #convert to boolean
+		json_response.update({'connection' : 'true'})
+
+		if check_collection:
+			json_response.update({'collection' : 'true'})
+			
+			delelete_user = Collection.query.filter_by(title = serie,user_id = id).first()
+			db.session.delete(delelete_user)
+			db.session.commit()
+			json_response.update({'deleted' : 'true'})
+
+		else:
+			json_response.update({'collection' : 'false'})
+			json_response.update({'deleted' : 'false'})
+
+		
+	except:
+		json_response.update({'connection' : 'false'})
+
 	return jsonify(json_response)
 
 if __name__ == "__main__": #only start webserver if this file is called directly

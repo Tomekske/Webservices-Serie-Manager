@@ -2,6 +2,7 @@ import { Component, OnInit, AfterViewInit} from '@angular/core';
 import { ActivatedRoute,Router } from '@angular/router';
 
 import { HttpClient } from '@angular/common/http';
+import { AutorisationService } from '../autorisation.service';
 
 interface searchSerie{
 	page: number,
@@ -37,6 +38,7 @@ export class SearchComponent implements OnInit {
 
 
 	ngOnInit() {
+
 			this.routeSub = this.route.params.subscribe(params =>{
 			this.name =	params['name'];	
 			console.log('serie:',this.name);
