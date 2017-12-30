@@ -18,5 +18,4 @@ export class LogoutComponent implements OnInit {
     this.autor.setId(0);
   	this.router.navigate(["/"]);
   }
-
 }

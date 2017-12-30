@@ -50,68 +50,73 @@ export class UpdateComponent implements OnInit {
           	this.sUsername = res['username'];
           	this.sEmail = res['email'];
           	this.sPassword = res['password'];
-          	if(res['admin'] === 1){
+          	if(res['admin'] === 1)
+            {
 	           	this.sAdmin = 'True';
           	}
-          	else{
+          	else
+            {
             	this.sAdmin = 'False';
           	}
           }
-          else{
-            this.router.navigate(['/dashboard']);
+          else
+          {
+             alert("Could not acces database");
           }
-
     	},
   	);
   }
-  send(){
+
+  send()
+  {
   	this.update.id = this.id;
   	this.update.username = this.sUsername;
   	this.update.email = this.sEmail;
   	this.update.password = this.sPassword;
 
-  	if(this.sAdmin === 'True'){
+  	if(this.sAdmin === 'True')
+    {
   		this.update.admin = 1;
     }
-    else{
+    else
+    {
   		this.update.admin = 0;
     }
   	//this.update.admin = this.adminn;
 
 	this.http.put(this.baseUrll, JSON.stringify(this.update),{headers: new HttpHeaders().set('Content-Type', 'application/json')})
 	    .subscribe(res => {
-	          if(res['connection'] === 'true')
-	          {
-	          	if(res['check_email'] === 'ok' && res['check_username'] === 'ok')
-	          	{
-            		this.router.navigate(['/dashboard']);
-	          	}
+        if(res['connection'] === 'true')
+        {
+        	if(res['check_email'] === 'ok' && res['check_username'] === 'ok')
+        	{
+        		this.router.navigate(['/dashboard']);
+        	}
 
-	          	else if(res['check_email'] === 'exists' && res['check_username'] === 'exists')
-	          	{
-  					this.email_exists = true;
-  					this.username_exists = true;
-	          	}
-	            
-	            else if(res['check_email'] === 'exists' && res['check_username'] === 'ok')
-	          	{
-  					this.email_exists = true;
-  					this.username_exists = false;
-	          	}
-	          	
-	          	else if(res['check_email'] === 'ok' && res['check_username'] === 'exists')
-	          	{
-  					this.email_exists = false;
-  					this.username_exists = true;
-	          	}
+        	else if(res['check_email'] === 'exists' && res['check_username'] === 'exists')
+        	{
+				    this.email_exists = true;
+				    this.username_exists = true;
+        	}
+          
+          else if(res['check_email'] === 'exists' && res['check_username'] === 'ok')
+        	{
+				    this.email_exists = true;
+				    this.username_exists = false;
+        	}
+        	
+        	else if(res['check_email'] === 'ok' && res['check_username'] === 'exists')
+        	{
+				    this.email_exists = false;
+				    this.username_exists = true;
+        	}
+        }
 
-	          }
-	          else
-	          {
-	          	console.log('nok');
-
-	          }
-		},
+        else
+        {
+        	alert("Could not update user");
+        }
+		  },
   	);
   }
 }

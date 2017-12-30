@@ -2,42 +2,39 @@
   <h1>Dashboard</h1>
   <hr>
 <div class="container">
-  <h2>Users {{ llll }}</h2>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Id</th>
-        <th>Usersname</th>
-        <th>Email</th>
-        <th>Password</th>
-        <th>Admin</th>
-        <th>Update</th>
-        <th>Delete</th>
-      </tr>
-    </thead>
-    <tbody >
-      <tr *ngFor="let item of users">
-        <td>{{ item.id }}</td>
-        <td>{{ item.username }}</td>
-        <td>{{ item.email }}</td>
-        <td>{{ item.password }}</td>
-        <td>{{ item.admin }}</td>
-        <td><button type="button" 
-        	        class="btn btn-warning" 
-                  
-                  (click)="update_user(item.id)">
-        	        Update
-          	</button>
-        </td>
-        <td><button type="button" 
-        			class="btn btn-danger"
-              (click)="delete_user(item.id)">
-        			Delete
-        	 </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-</div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Usersname</th>
+      <th>Email</th>
+      <th>Password</th>
+      <th>Admin</th>
+      <th>Update</th>
+      <th>Delete</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of users">
+      <td>{{ item.id }}</td>
+      <td><a routerLink="/dashboard/collection/{{ item.id }}">{{ item.username }}</a></td>
+      <td>{{ item.email }}</td>
+      <td>{{ item.password }}</td>
+      <td>{{ item.admin }}</td>
+      <td>
+        <button type="button" 
+                class="btn btn-warning" 
+                (click)="update_user(item.id)">
+                Update
+        </button>
+      </td>
+      <td>
+        <button type="button" 
+                class="btn btn-danger"
+                (click)="delete_user(item.id)">
+                Delete
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>

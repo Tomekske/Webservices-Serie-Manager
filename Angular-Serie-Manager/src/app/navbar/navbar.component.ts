@@ -27,7 +27,6 @@ export class NavbarComponent implements OnInit {
 		});
 		
 		this.autor.admin.subscribe((admin) =>{
-			console.log('admin',admin);
 			this.admin = admin;
 		});
 	}
@@ -37,7 +36,6 @@ export class NavbarComponent implements OnInit {
 		this.fullSearch = this.baseSearch + this.search;
 		this.route.params.subscribe(params =>{
   			this.router.navigate([this.fullSearch]);
-  			console.log("hier");
   		});
 	}
 }

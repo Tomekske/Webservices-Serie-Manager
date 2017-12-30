@@ -1,26 +1,32 @@
 <div class="col-sm-8 text-left"> 
   <h1>Search</h1>
   <hr>
-   <ul *ngFor="let item of serie; let i = index">
-      <div class="container">    
-		<div class="row">
-			<div class="col-md-8">				
-				<div class="panel panel-default  panel--styled">
-					<div class="panel-body">
-						<div class="col-md-12 panelTop">	
-							<div class="col-md-4">	
-								<img class="img-responsive" src="{{ item.url }}" alt=""/>
-							</div>
-							<div class="col-md-8">	
-								<h2>{{ i+1 }}. 
-								<a routerLink="/serie/{{ item.name }}">{{ item.name }} </a></h2>
-								<p>{{ item.description }}</p>
+
+	<div *ngIf="results">
+	   <ul *ngFor="let item of serie; let i = index">
+	      <div class="container">    
+			<div class="row">
+				<div class="col-md-8">				
+					<div class="panel panel-default  panel--styled">
+						<div class="panel-body">
+							<div class="col-md-12 panelTop">	
+								<div class="col-md-4">	
+									<img class="img-responsive" src="{{ item.url }}" alt=""/>
+								</div>
+								<div class="col-md-8">	
+									<h2>{{ i+1 }}. 
+									<a routerLink="/serie/{{ item.name }}">{{ item.name }} </a></h2>
+									<p>{{ item.description }}</p>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-    </div>
-  </ul>
+	    </div>
+	  </ul>
+	</div>
+	<div *ngIf="!results">
+		<p>No results found</p>
+	</div>	 
 </div>

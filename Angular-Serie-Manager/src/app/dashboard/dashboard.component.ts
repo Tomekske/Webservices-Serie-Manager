@@ -23,7 +23,6 @@ interface Users{
 })
 export class DashboardComponent implements OnInit {
   httpObs: Observable<any>;
-  lll = '';
 	posts: any;
   admin = false;
   baseUrl = 'http://localhost:5000/users/delete?id=';
@@ -42,11 +41,40 @@ export class DashboardComponent implements OnInit {
           this.router.navigate(["/"]);
         }
       });
+      this.fetchUsers();
 
-  		this.posts = this.http.get<Users>('http://localhost:5000/users').subscribe(data =>{
-  			console.log(data)
+  	}
+
+    update_user(id)
+    {
+      this.router.navigate(['/dashboard/update/'+ id]);
+    }
+
+    delete_user(id)
+    {
+      this.http.delete(this.baseUrl+id).subscribe(data =>{
+
+        if(data['connection'] === 'true')
+        {
+          this.route.params.subscribe( () => {
+             this.users.length = 0;
+             this.fetchUsers();        
+          });   
+        }
+        else
+        {
+          alert("Could not delete user");
+        }
+      });
+    }
+
+    fetchUsers()
+    {
+      this.posts = this.http.get<Users>('http://localhost:5000/users').subscribe(data =>{
+
        if(data['connection'] === 'true')
        {
+
         for(let i = 0; i < data.total_results;i++)
         {
           this.users.push({
@@ -54,41 +82,16 @@ export class DashboardComponent implements OnInit {
               username: data.results[i].username,
               email: data.results[i].email,
               password: data.results[i].password,
-              admin: data.results[i].admin});
+              admin: data.results[i].admin
+          });
         }
        }
 
        else
        {
-         console.log('could not connect')
+        alert("Could not connect with database");
        }
-
-  					
-  		});
-  	}
-
-    update_user(id){
-            console.log("update:",id);
-            this.router.navigate(['/dashboard/update/'+ id]);
-
-    }
-
-    delete_user(id){
-
-      console.log("delete",id);
-      console.log(this.baseUrl+id);
-      this.http.delete(this.baseUrl+id).subscribe(data =>{
-
-        if(data['connection'] === 'true')
-        {
-          this.route.params.subscribe( () => {
-             location.reload();        
-           });   
-        }
-        else
-        {
-          console.log('could not connect');          
-        }
+    
       });
     }
 }

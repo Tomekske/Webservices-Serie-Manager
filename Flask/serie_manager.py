@@ -4,7 +4,6 @@ from collections import OrderedDict
 import json
 from flask_cors import CORS,cross_origin
 
-
 app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root@localhost/serie_manager'
@@ -20,7 +19,7 @@ class User(db.Model):
 	email = db.Column('email', db.Unicode) #varchar
 	password = db.Column('password', db.Unicode)
 	admin = db.Column('admin', db.Integer)
-#	collections = db.relationship('Collection', backref='owner', lazy='dynamic')
+
 	def __init__(self, username, email, password,admin): #constructor
 		self.id = id
 		self.username = username
@@ -44,16 +43,16 @@ class Collection(db.Model):
 @app.route("/")
 @cross_origin()
 
-##
-## @brief      { function_description }
-##
-## @return     { description_of_the_return_value }
-##
+## @brief      index page of website
+## @return     returns index page
 def index():
     return 'Welcome'
 
 @app.route("/users", methods=['GET'])
 @cross_origin()
+
+## @brief      Get all users from database
+## @return     returns JSON response
 def users():
 	json_response = {} 
 	all_users = []
@@ -83,11 +82,8 @@ def users():
 @app.route("/users/delete", methods=['GET','DELETE'])
 @cross_origin()
 
-##
-## @brief      { function_description }
-##
-## @return     { description_of_the_return_value }
-##
+## @brief      Delete a users from database
+## @return     returns JSON response
 def users_delete():
 	id = request.args.get('id', type = int)
 	json_response = {}
@@ -107,11 +103,8 @@ def users_delete():
 @app.route("/users/create", methods=['GET','POST'])
 @cross_origin()
 
-##
-## @brief      { function_description }
-##
-## @return     { description_of_the_return_value }
-##
+## @brief      Create a users and store user in database
+## @return     returns JSON response
 def users_create():
 	data = request.get_json()
 	json_response = {}
@@ -164,6 +157,8 @@ def users_create():
 
 @app.route("/users/single", methods=['POST','PUT'])
 @cross_origin()
+## @brief      Get login info from a single user
+## @return     returns JSON response
 def single_user():
 	data = request.get_json()
 	id = data['id']
@@ -184,8 +179,6 @@ def single_user():
 		json_response.update({"password" : password})
 		json_response.update({"admin" : admin})
 
-
-
 	except:
 		json_response.update({"connection" : "false"})
 
@@ -195,6 +188,8 @@ def single_user():
 
 @app.route("/users/update", methods=['POST','PUT'])
 @cross_origin()
+## @brief      Update user and update database
+## @return     returns JSON response
 def update_users():
 	data = request.get_json()
 	json_response = {}
@@ -253,14 +248,10 @@ def update_users():
 	print(json_response)
 	return jsonify(json_response)
 
-@app.route("/login", methods=['GET','POST'])
+@app.route("/userlogin", methods=['GET','POST'])
 @cross_origin()
-
-##
-## @brief      { function_description }
-##
-## @return     { description_of_the_return_value }
-##
+## @brief      Check if user exsist in database
+## @return     returns JSON response
 def login():
 	data = request.get_json()
 	json_response = {}
@@ -298,15 +289,17 @@ def login():
 @app.route("/collection", methods=['GET','POST'])
 @app.route("/collection/get", methods=['GET','POST'])
 @cross_origin()
+## @brief      Get a users collection
+## @return     returns JSON response
 def collection():
 	json_response = {}
 	all_series = []
 
 	id = request.args.get('id', type = int)
 
-
 	try:
 		check_collection = Collection.query.filter_by(user_id = id).count() #check if collection exsists
+
 		check_collection = bool(check_collection) #convert to boolean
 		json_response.update({'connection' : 'true'})
 		print("controleer:", check_collection)
@@ -324,12 +317,14 @@ def collection():
 							'picture' : serie.picture
 						}
 					)
-					
+
 			json_response.update({'collection' : all_series});
 			json_response.update({'total_results' : i});
 
 		else:
 			json_response.update({'user_id' : 'false'});
+			json_response.update({'total_results' : 0});
+
 	except:
 		json_response.update({'connection' : 'false'})
 		json_response.update({'user_id' : 'false'});
@@ -338,6 +333,8 @@ def collection():
 
 @app.route("/collection/add", methods=['GET','POST'])
 @cross_origin()
+## @brief      Add a serie to users collection
+## @return     returns JSON response
 def addCollection():
 	json_response = {}
 
@@ -366,9 +363,11 @@ def addCollection():
 
 	print(json_response)
 	return jsonify(json_response)
+
 @app.route("/collection/check", methods=['GET','POST'])
 @cross_origin()
-
+## @brief      Check if a serie is in a users collection or not
+## @return     returns JSON response
 def checkCollection():
 	json_response = {}
 	data = request.get_json()
@@ -389,7 +388,6 @@ def checkCollection():
 		else:
 			json_response.update({'collection' : 'false'})
 
-		
 	except:
 		json_response.update({'connection' : 'false'})
 		json_response.update({'collection' : 'false'})
@@ -402,13 +400,10 @@ def checkCollection():
 
 @app.route("/collection/delete", methods=['GET','POST','DELETE'])
 @cross_origin()
-
+## @brief      Delete a serie from users collection
+## @return     returns JSON response
 def deleteCollection():
 	json_response = {}
-#	data = request.get_json()
-
-#	serie = data['title']
-#	id = data['user_id']
 
 	id = request.args.get('id', type = int)
 	serie = request.args.get('title', type = str)
@@ -441,29 +436,3 @@ def deleteCollection():
 
 if __name__ == "__main__": #only start webserver if this file is called directly
 	app.run(debug=True)
-
-
-
-
-
-# xx = []
-# ex = User.query.all()
-# for x in ex:
-#  	xx.append({'username' : x.username,'email' : x.email,'password' : x.password})
-
-# print(xx)
- 
-
-#print(xx)
-# insert = User('vvvv','ccc@gmail.com','mnb')
-# db.session.add(insert)
-# db.session.commit()
-
-#update = User.query.filter_by(username='aaa').first()
-#update.username = 'bbb'
-#db.session.commit()
-
-
-# dele = User.query.filter_by(id = 2).first()
-# db.session.delete(dele)
-# db.session.commit()

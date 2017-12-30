@@ -14,12 +14,11 @@ interface searchSerie{
 }
 
 @Component({
-  selector: 'app-collection',
-  templateUrl: './collection.component.html',
-  styleUrls: ['./collection.component.css']
+  selector: 'app-user-collection',
+  templateUrl: './user-collection.component.html',
+  styleUrls: ['./user-collection.component.css']
 })
-
-export class CollectionComponent implements OnInit {
+export class UserCollectionComponent implements OnInit {
 	user_id = 0;
 	total_results = 0;
   results = false;
@@ -31,18 +30,18 @@ export class CollectionComponent implements OnInit {
   constructor(private router: Router,private route: ActivatedRoute,private http: HttpClient,private autor: AutorisationService) { }
 
   ngOnInit() {
-     this.autor.login.subscribe((login) =>{
+  	this.route.params.subscribe(params =>{
+		this.user_id =	params['id'];	
+	});
+
+    this.autor.login.subscribe((login) =>{
         if(!login){
           this.router.navigate(["/"]);
         }
-      });
-  	this.autor.id.subscribe((id) =>{
-        this.user_id = id;
     });
-
+	
     this.http.get<searchSerie>('http://localhost:5000/collection/get?id=' + this.user_id).subscribe(data =>{
   		this.total_results = data.total_results;
-
       if(this.total_results == 0)
       {
         this.results = false;

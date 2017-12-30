@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { ActivatedRoute,Router } from '@angular/router';
 import { AutorisationService } from '../autorisation.service';
 
 @Component({
@@ -10,23 +9,15 @@ import { AutorisationService } from '../autorisation.service';
 
 })
 export class HomeComponent implements OnInit {
-  sub: Subscription;
-    ii = false;
-    msg:string;
-  constructor(private autor: AutorisationService) { }
+  login = false;
+  constructor(private router: Router,private autor: AutorisationService) { }
   ngOnInit() {
-  //	console.log("hiihi",this.autor.login);
-
-
-      this.sub = this.autor.login.subscribe((curr) => {
-          console.log('login',curr);
-        });
+    this.autor.login.subscribe((login) => {
+      this.login = login;
+    });
   }
-
-  ngOnDestroy(){
-    this.sub.unsubscribe();
+  register()
+  {
+    this.router.navigate(['/register']);
   }
-
-
-
  }

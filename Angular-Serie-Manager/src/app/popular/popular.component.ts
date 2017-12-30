@@ -30,17 +30,17 @@ export class PopularComponent implements OnInit {
 	posts: any;
 	pictureBaseUrl = 'https://image.tmdb.org/t/p/w500/';
 	pictureFullUrl = '';
+	api = 'https://api.themoviedb.org/3/discover/tv?api_key=a7fbc4b37ef74e87e3d943a1fa2df6b1&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1';
     popular: { name: string, description: string, url: string }[] = [];
   constructor(private http: HttpClient) { }
 
   ngOnInit() 
   {
-  	this.posts = this.http.get<popularSeries>('https://api.themoviedb.org/3/discover/tv?api_key=a7fbc4b37ef74e87e3d943a1fa2df6b1&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1').subscribe(data =>{
+  	this.posts = this.http.get<popularSeries>(this.api).subscribe(data =>{
   
 	    for(let i=0;i<20;i++)
 	    {
 	   		this.pictureFullUrl = this.pictureBaseUrl + data.results[i].poster_path;
-	   		console.log(this.pictureBaseUrl);
 	   		this.popular.push({ name: data.results[i].name, description: data.results[i].overview, url: this.pictureFullUrl });
 	    }
  	 })

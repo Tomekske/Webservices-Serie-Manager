@@ -1,3 +1,8 @@
-<footer class="container-fluid text-center">
-  <p>Footer Text</p>
+<footer>
+	<div class="text-center">
+		<a routerLink="">Home</a> |
+		<a routerLink="/popular">Popular</a> |
+		<a routerLink="/contact">Contact</a> |
+		<a *ngIf="admin" routerLink="/dashboard">Dasboard</a>
+	</div>
 </footer>

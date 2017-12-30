@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
+import { AutorisationService } from '../autorisation.service';
 
 @Component({
   selector: 'app-footer',
@@ -6,10 +8,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./footer.component.css']
 })
 export class FooterComponent implements OnInit {
-
-  constructor() { }
+  admin = false;
+  constructor(private autor: AutorisationService) { }
 
   ngOnInit() {
-
+		this.autor.admin.subscribe((admin) =>{
+			this.admin = admin;
+		});
   }
 }

@@ -109,24 +109,24 @@ export class SerieComponent implements OnInit {
     			this.login = true;
     			this.http.post('http://localhost:5000/collection/check', JSON.stringify(this.check_collection),{headers: new HttpHeaders().set('Content-Type', 'application/json')})
       			.subscribe(res => {
-      			console.log(res);
-		  		if(res['connection'] === 'true')
-		  		{
-		  			if(res['collection'] === 'true')
-		  			{
-		  				this.col = true;
-		  			}
 
-		  			else
-		  			{
-		  				this.col = false;
-		  			}
-		  		}
+			  		if(res['connection'] === 'true')
+			  		{
+			  			if(res['collection'] === 'true')
+			  			{
+			  				this.col = true;
+			  			}
 
-		  		else
-		  		{
-		  			alert("Could not connect to database!");
-		  		}
+			  			else
+			  			{
+			  				this.col = false;
+			  			}
+			  		}
+
+			  		else
+			  		{
+			  			alert("Could not connect to database!");
+			  		}
 		      });
 	    	}
 	    	else
@@ -137,17 +137,11 @@ export class SerieComponent implements OnInit {
 
     });
     
-
-
-
-  	
-
 	this.posts = this.http.get<basicInformation>('http://api.themoviedb.org/3/search/tv?page=1&query='+ this.name +'&language=en-US&api_key=' + this.api_key).subscribe(data =>{
 		this.id = data.results[0].id;
 		this.serie = data.results[0].name;
 		this.description = data.results[0].overview;
 
-		console.log('id',this.id);
 		this.fullUrl = this.baseUrl + this.id + this.api_key;
 		this.pictureFullUrl = this.pictureBaseUrl + data.results[0].poster_path;
 
@@ -177,7 +171,6 @@ export class SerieComponent implements OnInit {
     console.log(season);
     this.wPost = this.http.get<episodesPerSeason>('https://api.themoviedb.org/3/tv/'+ this.id +'/season/'+ season +'?api_key=' + this.api_key).subscribe(serieInfo =>{
  		this.amount_of_episodes = serieInfo.episodes.length;
- 		console.log(this.amount_of_episodes);
 
  		if(this.f_episodes.length != 0)
  		{
@@ -195,10 +188,9 @@ export class SerieComponent implements OnInit {
 }
 
 
-	addToCollection(title: string, description: string, picture: string){
+	manageCollection(title: string, description: string, picture: string){
 		if(this.col === true)
 		{
-			console.log("hier");
 			this.http.delete("http://localhost:5000/collection/delete?id=" + this.user_id + "&" + "title=" + this.name).subscribe(data =>{
 
 				if(data['connection'] === 'true')
@@ -207,24 +199,31 @@ export class SerieComponent implements OnInit {
 				}
 				else
 				{
-				  console.log('could not connect');          
+				  this.col = true;
+				  alert("Could not delete serie from collection");          
 				}
 			});
 		}
 
 		else
 		{
-			console.log("daar");
-
-			this.col = true;
 			this.collection.title = title;
 			this.collection.description = description;
 			this.collection.picture = picture;
 			this.collection.user_id = this.user_id;
 		    this.http.post('http://localhost:5000/collection/add', JSON.stringify(this.collection),{headers: new HttpHeaders().set('Content-Type', 'application/json')})
-      		.subscribe(res => {
-  				console.log(res); 
-     		 });
+      		.subscribe(res => { 
+
+      			if(res['connection'] !== 'true')
+				{
+				 this.col = false;
+				  alert("Could not add to collection");          
+				}
+				else
+				{
+					this.col = true;
+				}
+      		});
 		}
 		
 	}

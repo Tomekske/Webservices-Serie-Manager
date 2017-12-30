@@ -2,6 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute,Router } from '@angular/router';
 import { AutorisationService } from '../autorisation.service';
+
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -30,11 +32,11 @@ export class LoginComponent implements OnInit {
 
     this.login.sentUsername = this.sUsername;
     this.login.sentPassword = this.sPassword;
+    
     this.autor.login_user(this.sUsername,this.sPassword);
     this.httpObs = this.autor.login_user(this.login.sentUsername,this.login.sentPassword);
     this.httpObs.subscribe(res =>{
       
-      console.log(res);
       if(res['connection'] === 'true')
       {
         if(res['results'] === 'true')
@@ -50,15 +52,15 @@ export class LoginComponent implements OnInit {
 
           this.router.navigate(["/"]);
         }
-        else{
+        else
+        {
           this.autor.setLogin(false);
           this.failed = true;
-
         }
       }
       else
       {
-        this.failed = true;
+        alert("Could not connect with database");
       }
     });
   }

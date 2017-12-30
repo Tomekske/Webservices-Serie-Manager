@@ -1,6 +1,17 @@
 <div class="col-sm-8 text-left"> 
   <h1>Home</h1>
-  <hr>
-  <h3>Home Test</h3>
-  <p>Home Lorem ipsum...</p>
+  <hr>		
+  	<div class="text-center">
+  		<div *ngIf="!login">
+  			<h3>Create your own free account</h3>
+  			<button type="button" 
+  		  			class="btn btn-primary spacing-bot"
+  		  			(click)="register()">
+  		  			Create account
+  		    </button>
+  		</div>
+		<div *ngIf="login">
+  			<h3>Search for TV-Shows in the searchbar</h3>
+  		</div>
+  	</div>
 </div>

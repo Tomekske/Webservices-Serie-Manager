@@ -17,11 +17,11 @@ import { RegisterComponent } from './register/register.component';
 import { PopularComponent } from './popular/popular.component';
 import { SerieComponent } from './serie/serie.component';
 import { SearchComponent } from './search/search.component';
-import { UsersComponent } from './users/users.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { UpdateComponent } from './update/update.component';
 import { LogoutComponent } from './logout/logout.component';
 import { CollectionComponent } from './collection/collection.component';
+import { UserCollectionComponent } from './user-collection/user-collection.component';
 
 
 @NgModule({
@@ -37,11 +37,11 @@ import { CollectionComponent } from './collection/collection.component';
     PopularComponent,
     SerieComponent,
     SearchComponent,
-    UsersComponent,
     DashboardComponent,
     UpdateComponent,
     LogoutComponent,
-    CollectionComponent
+    CollectionComponent,
+    UserCollectionComponent
   ],
   imports: [
     BrowserModule,
@@ -59,7 +59,8 @@ import { CollectionComponent } from './collection/collection.component';
         { path: 'search/:name', component: SearchComponent },
         { path: 'dashboard', component: DashboardComponent },
         { path: 'dashboard/update/:id', component: UpdateComponent },
-        { path: 'collection', component: CollectionComponent },
+        { path: 'dashboard/collection/:id', component: UserCollectionComponent },
+        { path: 'seriecollection', component: CollectionComponent },
     ])
   ],
   providers: [AutorisationService],
