@@ -39,8 +39,8 @@
 ### 3. Database ###
 #### 3.1 Import SQL script into phpmMyAdmin ###
 	serie_manager.sql
-#### 3.2 you may or may not have to change your database configuration ####
-	init.ini
+#### 3.2 You may have to change your database configuration ####
+	Flask/init.ini
 ### 4. Running server ###
 #### 4.1 Enter Flask directory ###
 	cd Flask
