@@ -1,7 +1,5 @@
 from flask import Flask, render_template, request, Response, jsonify
 from flask_sqlalchemy import SQLAlchemy
-from collections import OrderedDict
-import json
 from flask_cors import CORS,cross_origin
 import configparser
 
