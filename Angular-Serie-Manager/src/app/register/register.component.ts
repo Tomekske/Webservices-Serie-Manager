@@ -63,7 +63,7 @@ export class RegisterComponent implements OnInit {
           }
           else
           {
-            alert("Could not connect with database");
+            alert("Problems registering");
           }
         },
     );

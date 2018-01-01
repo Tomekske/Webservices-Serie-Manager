@@ -60,7 +60,7 @@ export class LoginComponent implements OnInit {
       }
       else
       {
-        alert("Could not connect with database");
+        alert("Problems loggin in");
       }
     });
   }

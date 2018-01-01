@@ -3,10 +3,21 @@ from flask_sqlalchemy import SQLAlchemy
 from collections import OrderedDict
 import json
 from flask_cors import CORS,cross_origin
+import configparser
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root@localhost/serie_manager'
+
+#parse config file with database information
+config = configparser.ConfigParser()
+config.read('init.ini')
+
+database = config['db']['database']
+username = config['db']['username']
+host = config['db']['host']
+table = config['db']['table']
+
+app.config['SQLALCHEMY_DATABASE_URI'] = "{}://{}@{}/{}".format(database,username,host,table)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -40,13 +51,21 @@ class Collection(db.Model):
 		self.description = description
 		self.picture = picture
 
+@app.errorhandler(404)
+@cross_origin()
+## @brief      Catch 404 error
+## @param      error code
+## @return     Return index template
+def page_not_found(error):
+    return render_template('index.html'), 404
+
 @app.route("/")
 @cross_origin()
 
 ## @brief      index page of website
 ## @return     returns index page
 def index():
-    return 'Welcome'
+	return render_template("index.html")
 
 @app.route("/users", methods=['GET'])
 @cross_origin()
@@ -123,7 +142,6 @@ def users_create():
 		email_exists = db.session.query(db.exists().where(User.email == email)).scalar()
 		json_response.update({'connection' : 'true'})
 
-
 		if (not username_exists) and (not email_exists):
 			json_response.update({'username' : 'ok'})
 			json_response.update({'email' : 'ok'})
@@ -188,7 +206,7 @@ def single_user():
 
 @app.route("/users/update", methods=['POST','PUT'])
 @cross_origin()
-## @brief      Update user and update database
+## @brief      Update user in database
 ## @return     returns JSON response
 def update_users():
 	data = request.get_json()
@@ -201,11 +219,8 @@ def update_users():
 		password = data['password'] 
 		admin = data['admin']
 
-		print(username)
-		print(email)
-		print(password)
-		print(admin)
-
+		check_username = User.query.filter_by(username = username).count()
+		check_username = bool(check_username) #convert to boolean
 
 		check_email = User.query.filter_by(email = email).count()
 		check_email = bool(check_email) #convert to boolean

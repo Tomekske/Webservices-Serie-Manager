@@ -61,7 +61,7 @@ export class UpdateComponent implements OnInit {
           }
           else
           {
-             alert("Could not acces database");
+             alert("Could not update user");
           }
     	},
   	);
